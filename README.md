@@ -27,8 +27,9 @@ cudaMalloc() 함수는 그래픽 카드의 DRAM에 메모리 공간을 할당하
 두 번째 인자로는 할당할 메모리의 크기를 입력한다.
 cudaError_t는 함수 호출의 성공 여부를 나타내는 반환값이다.
 
-할당 성공 -> 'cudaSuccess' 를 반환
-할당 실패 -> 원인 약 20가지의 값을 반환
+할당 성공 -> 'cudaSuccess' 를 반환.
+
+할당 실패 -> 원인 약 20가지의 값을 반환.
 
 2-2 PC에서 그래픽 카드로 데이터 복사
 ```bash
@@ -48,4 +49,48 @@ PC 메모리에서 GPU 메모리로 또는 GPU메모리에서 PC메모리로 데
 
 마지막 인자는 cudaMemcpy의 종류로 아래와 같은 종류를 넣을 수 있다.
 
+|종류|동작|
+|---|---|
+| CudaMemcpyHostToHost| PC 메모리에서 PC 메모리로 복사 |
+| CudaMemcpyHostToHoDevice| PC 메모리에서 그래픽 카드로 복사 |
+| CudaMemcpyDeviceToHost| 그래픽 카드 메모리에서 그래픽 카드로 복사 |
+| CudaMemcpyDeviceToDevice| 그래픽 카드 메모리에서 그래픽 카드로 복사 |
 
+2-3 그래픽 카드 메모리의 해체
+```bash
+cudaError_t cudaFree(void* devPtr);
+```
+cudaFree() 함수는 그래픽 카드의 DRAM에 할당된 메모리를 해체한다, 인자로 해체하고자 하는 포인터를 전달한다.
+
+```bash
+//그래픽 카드에 메모리 사용하기
+#include <stdio.h>
+ 
+int main()
+{
+    int InputData[5] = {1, 2, 3, 4, 5};
+    int OutputData[5] = {0};
+ 
+    int* GraphicsCard_memory;
+ 
+    //그래픽카드 메모리의 할당
+    cudaMalloc((void**)&GraphicsCard_memory, 5*sizedof(int));
+ 
+    //PC에서 그래픽 카드로 데이터 복사
+    cudaMemcpy(GraphicsCard_memory, InputData, 5*sizedof(int), cudaMemcpyHostToDevice);
+ 
+    //그래픽 카드에서 PC로 데이터 복사
+    cudaMemcpy(OutputData, GraphicsCard_memory, 5*sizedof(int), cudaMemcpyDeviceToHost);
+ 
+    //결과 출력
+    for( int i = 0; i < 5; i++)
+    {
+        printf(" OutputData[%d] : %d\n", i, OutputData[i]);
+    }
+ 
+    //그래픽 카드 메모리의 해체
+    cudaFree(GraphicsCard_memory);
+ 
+    return 0;
+}
+```
