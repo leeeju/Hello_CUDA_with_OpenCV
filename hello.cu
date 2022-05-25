@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-__global__ void hello(void) {
-	printf("Hello, CUDA! %d \n", threadIdx.x);
+__global__ void kernel(void){
+    
 }
-
-int main(void) {
-	hello <<<1, 10>>> ();
-
-	return 0;
+int main(void) 
+{
+    kernel <<<1,1>>> ();
+    printf("hello, world \n");
+    return 0;
 }
