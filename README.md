@@ -31,7 +31,7 @@ cudaError_t는 함수 호출의 성공 여부를 나타내는 반환값이다.
 
 할당 실패 -> 원인 약 20가지의 값을 반환.
 
-2-2 PC에서 그래픽 카드로 데이터 복사
+2-2 PC에서 그래픽 카드로 데이터 복사(예시)
 ```bash
 cudaError_t cudaMemcpy(void* dst, const void* src, size_t count, cudaMemcpyHostToDevice);
 ```
@@ -56,12 +56,12 @@ PC 메모리에서 GPU 메모리로 또는 GPU메모리에서 PC메모리로 데
 | CudaMemcpyDeviceToHost| 그래픽 카드 메모리에서 그래픽 카드로 복사 |
 | CudaMemcpyDeviceToDevice| 그래픽 카드 메모리에서 그래픽 카드로 복사 |
 
-2-3 그래픽 카드 메모리의 해체
+2-3 그래픽 카드 메모리의 해체 (예시)
 ```bash
 cudaError_t cudaFree(void* devPtr);
 ```
 cudaFree() 함수는 그래픽 카드의 DRAM에 할당된 메모리를 해체한다, 인자로 해체하고자 하는 포인터를 전달한다.
-
+- 예시
 ```bash
 //그래픽 카드에 메모리 사용하기
 #include <stdio.h>
